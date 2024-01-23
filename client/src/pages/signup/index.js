@@ -1,9 +1,11 @@
 import React from 'react'
 
-export default function Home() {
+function SignUp() {
   return (
     <div>
-      Chat
+      SignUp
     </div>
   )
 }
+
+export default SignUp

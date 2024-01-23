@@ -1,12 +1,29 @@
 const express = require("express");
-const path = require("path");
-const app = express();
+const cors = require("cors");
+const mongoose = require("mongoose");
 
+require("dotenv").config();
+const app = express();
 const port = 4000;
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "/views"));
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
+
+main().then(() => {
+    console.log("Database connected");
+}).catch(err => console.log(err));
+
+
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/test', options);
+}
+
+app.use(cors());
+app.use(express.json())
+
 
 app.listen(port, (req, res) => {
-  console.log(`app started on port: ${port}`);
-});
+    console.log(`server started ${port}`);
+})

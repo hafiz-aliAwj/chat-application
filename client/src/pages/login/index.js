@@ -1,9 +1,11 @@
 import React from 'react'
 
-export default function Home() {
+function Login() {
   return (
     <div>
-      Chat
+      Login
     </div>
   )
 }
+
+export default Login
