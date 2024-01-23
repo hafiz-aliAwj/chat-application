@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser');
+const user = require("./Routes/user");
 
 require("dotenv").config();
 const app = express();
@@ -17,12 +19,17 @@ main().then(() => {
 
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/test', options);
+  await mongoose.connect('mongodb://127.0.0.1:27017/chat-app', options);
 }
 
+
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json())
 
+
+app.use('/auth', user);
+app.use('/auth', user);
 
 app.listen(port, (req, res) => {
     console.log(`server started ${port}`);
