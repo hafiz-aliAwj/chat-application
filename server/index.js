@@ -29,7 +29,6 @@ app.use(express.json())
 
 
 app.use('/auth', user);
-app.use('/auth', user);
 
 app.listen(port, (req, res) => {
     console.log(`server started ${port}`);

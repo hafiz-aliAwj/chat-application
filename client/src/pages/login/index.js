@@ -42,7 +42,9 @@ function Login() {
           console.log("Login successful!");
           router.push("/");
           const data = await response.json();
-          localStorage.setItem("chat-user", data.findUsername)
+          if(data.status === true){
+            localStorage.setItem("chat-user", JSON.stringify(data.user));
+          }
         } else {
           const errorResponse = await response.json();
           setMessage(errorResponse.error || "Failed to Login");
