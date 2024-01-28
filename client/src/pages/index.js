@@ -10,7 +10,7 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [user, setUser] = useState(undefined);
-  // const [name,SetName] = useState("");
+  const [allChats,setAllChats] = useState([])
   const router = useRouter();
 
   useEffect(() => {
@@ -29,11 +29,11 @@ export default function Chat() {
   const fetchingUsers = async () => {
     if (user) {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/auth/users/${user.email}`
+        const response = await fetch(
+          `http://localhost:4000/auth/users/${user.username}`
         );
-        console.log(response); // Log the entire response object
-        setContacts(response.data.users);
+        const data = await response.json();
+        setContacts(data.users);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -42,9 +42,51 @@ export default function Chat() {
 
   const chatChanger = (chat) => {
     setCurrentChat(chat);
+    getAllMessages();
   };
 
+  const createMessage = async (message) => {
+    const sender = user.username;
+    const reciever = currentChat.username;
+    try {
+      const response = await fetch("http://localhost:4000/message/createMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender : user.username,
+          reciever: currentChat.username,
+          content: message,
+        })
+      })
+      getAllMessages();
+    } catch (error) {
+      console.error("An error occurred during message", error)
+    }
+  };
 
+  const getAllMessages = async() => {
+    try {
+      const response = await fetch("http://localhost:4000/message/getAllMessages",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user1: user.username,
+          user2: currentChat.username,
+        }),
+      });
+      if(response.ok){
+        const data = await response.json();
+        setAllChats(data);
+       
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   
   return (
     <>
@@ -58,7 +100,7 @@ export default function Chat() {
           {currentChat === undefined ? (
             <Welcome user={user}/>
           ) : (
-            <ChatContainer currentChat={currentChat}/>
+            <ChatContainer currentChat={currentChat} user={user} createMessage={createMessage} allChats ={allChats}/>
           )}
         </div>
       </div>

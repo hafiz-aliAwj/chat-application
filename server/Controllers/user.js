@@ -51,13 +51,17 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find({email: {$ne: req.params.email}}).select([
+    const users = await User.find({username: {$ne: req.params.username}}).select([
       "username",
       "email",
       "_id",
     ]);
-    console.log(users);
-    return res.json({users});
+    if(users){
+      return res.json({users});
+    }else{
+      const nouser = [];
+      return res.json(nouser);
+    }
   } catch (error) {
     next(error);
   }

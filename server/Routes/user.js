@@ -3,5 +3,5 @@ const router = require("express").Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
-router.get("/users/:email", getUsers);
+router.get("/users/:username", getUsers);
 module.exports = router;
