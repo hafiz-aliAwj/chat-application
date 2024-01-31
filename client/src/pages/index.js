@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AllContacts from "@/Components/AllContacts";
 import Welcome from "@/Components/Welcome";
 import ChatContainer from "@/Components/ChatContainer";
-import { userAgent } from "next/server";
 
 export default function Chat() {
   const [contacts, setContacts] = useState([]);
@@ -29,9 +27,7 @@ export default function Chat() {
   const fetchingUsers = async () => {
     if (user) {
       try {
-        const response = await fetch(
-          `http://localhost:4000/auth/users/${user.username}`
-        );
+        const response = await fetch(`http://localhost:4000/auth/users/${user.username}`);
         const data = await response.json();
         setContacts(data.users);
       } catch (error) {
@@ -66,9 +62,9 @@ export default function Chat() {
     }
   };
 
-  const getAllMessages = async() => {
+  const getAllMessages = async () => {
     try {
-      const response = await fetch("http://localhost:4000/message/getAllMessages",{
+      const response = await fetch("http://localhost:4000/message/getAllMessages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
